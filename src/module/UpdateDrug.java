@@ -5,25 +5,33 @@ import java.awt.event.*;
 import java.sql.*;
 import javax.swing.*;
 
+import com.mysql.cj.x.protobuf.MysqlxNotice.Warning;
+import com.toedter.calendar.JDateChooser;
+
 import exceptions.DataInvalidException;
+import exceptions.DateInvalidException;
+import misc.PharmacyDb;
 import misc.Validation;
 
 public class UpdateDrug extends JFrame implements ActionListener {
 
-	JLabel drugNameLabel;
+	JLabel drugBarcodeLabel;
 	JLabel quantityLabel;
 	JLabel drugCostPriceLabel;
 	JLabel drugSalePriceLabel;
 	JLabel companyNameLabel;
 	JLabel supplierContactLabel;
-	JLabel DrugBarcode;
+	JLabel mfgLabel;
+	JLabel expiryLabel;
 
-	JTextField drugName;
+	JTextField drugBarcode;
 	JTextField quantity;
 	JTextField drugCostPrice;
 	JTextField drugSalePrice;
 	JTextField companyName;
 	JTextField supplierContact;
+	JDateChooser mfg;
+	JDateChooser expiry;
 
 	JButton reset;
 	JButton update;
@@ -33,7 +41,7 @@ public class UpdateDrug extends JFrame implements ActionListener {
 	Connection con;
 
 	public UpdateDrug() {
-		/************* setting frame Behaviou******************************** */
+		/************* setting frame Behaviour******************************** */
 
 		setTitle("update");
 		setBackground(Color.WHITE);
@@ -55,21 +63,25 @@ public class UpdateDrug extends JFrame implements ActionListener {
 		panel.setLayout(null);
 		/**************** creating object Label ***************** */
 
-		drugNameLabel = new JLabel("Drug Barcode:");
+		drugBarcodeLabel = new JLabel("Drug Barcode:");
 		quantityLabel = new JLabel("Quantity:");
 		drugCostPriceLabel = new JLabel("Cost Price:");
 		drugSalePriceLabel = new JLabel("Sale Price:");
 		companyNameLabel = new JLabel("Company Name:");
 		supplierContactLabel = new JLabel("Supplier Contact:");
+		mfgLabel = new JLabel("MFG");
+		expiryLabel = new JLabel("EXP");
 
 		/********** creating object Text Field ******************* */
 
-		drugName = new JTextField();
+		drugBarcode = new JTextField();
 		quantity = new JTextField();
 		drugCostPrice = new JTextField();
 		drugSalePrice = new JTextField();
 		companyName = new JTextField();
 		supplierContact = new JTextField();
+		mfg = new JDateChooser();
+		expiry = new JDateChooser();
 
 		/******** creating object Button**************** */
 
@@ -78,27 +90,33 @@ public class UpdateDrug extends JFrame implements ActionListener {
 
 		/******** Setting Component Location******* */
 
-		drugNameLabel.setBounds(75, 25, 100, 50);
+		drugBarcodeLabel.setBounds(75, 25, 100, 50);
 		quantityLabel.setBounds(75, 100, 100, 50);
 		drugCostPriceLabel.setBounds(75, 175, 100, 50);
 		drugSalePriceLabel.setBounds(75, 250, 100, 50);
 
 		companyNameLabel.setBounds(75, 325, 100, 50);
-		supplierContactLabel.setBounds(500, 25, 100, 50);
+		companyName.setBounds(200, 340, 175, 20);
 
-		drugName.setBounds(200, 40, 175, 20);
+		drugBarcode.setBounds(200, 40, 175, 20);
 		quantity.setBounds(200, 120, 175, 20);
 		drugCostPrice.setBounds(200, 190, 175, 20);
 		drugSalePrice.setBounds(200, 270, 175, 20);
 
-		companyName.setBounds(200, 340, 175, 20);
+		supplierContactLabel.setBounds(500, 25, 100, 50);
 		supplierContact.setBounds(630, 40, 175, 20);
+
+		mfgLabel.setBounds(520, 70, 100, 50);
+		mfg.setBounds(630, 85, 175, 20);
+
+		expiryLabel.setBounds(520, 115, 100, 50);
+		expiry.setBounds(630, 130, 175, 20);
 
 		update.setBounds(570, 250, 100, 40);
 		reset.setBounds(700, 250, 100, 40);
 
 		/********* Add component to frame********* */
-		panel.add(drugNameLabel);
+		panel.add(drugBarcodeLabel);
 		panel.add(quantityLabel);
 
 		panel.add(companyNameLabel);
@@ -108,13 +126,18 @@ public class UpdateDrug extends JFrame implements ActionListener {
 
 		panel.add(supplierContactLabel);
 
-		panel.add(drugName);
+		panel.add(drugBarcode);
 		panel.add(quantity);
 		panel.add(drugCostPrice);
 		panel.add(drugSalePrice);
 
 		panel.add(companyName);
 		panel.add(supplierContact);
+
+		panel.add(mfgLabel);
+		panel.add(mfg);
+		panel.add(expiryLabel);
+		panel.add(expiry);
 
 		panel.add(update);
 		panel.add(reset);
@@ -131,40 +154,32 @@ public class UpdateDrug extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == update) {
-			String query = "insert into medicine(drugName,drugCostPrice,drugSalePrice,supplierContact,drugQuantity) values (?,?,?,?,?,?,?,?,?,?,?,?);";
+			con = PharmacyDb.getConnection();
 			try {
 
-				Validation.characterStringValid(drugName.getText());
-				Validation.isPhoneValid(supplierContact.getText());
+				/* ********************** Validation *************************** */
 				Validation.isNumberValid(quantity.getText());
-				PreparedStatement ps = con.prepareStatement(query);
-				ps.setString(1, drugName.getText());
-				ps.setFloat(2, Float.parseFloat(drugCostPrice.getText()));
-				ps.setFloat(3, Float.parseFloat(drugSalePrice.getText()));
-				ps.setString(4, supplierContact.getText());
-				ps.setInt(5, Integer.parseInt(quantity.getText()));
-				ps.executeUpdate();
-				JOptionPane.showMessageDialog(null, "Medicine added successfully");
-				con.close();
+				Validation.isPhoneValid(supplierContact.getText());
+				Validation.isPriceValid(drugCostPrice.getText());
+				Validation.isPriceValid(drugSalePrice.getText());
+				Validation.isMfgValid(mfg.getDate());
+				Validation.isExpiryValid(expiry.getDate());
+				Validation.characterStringValid(companyName.getText());
+
+				getData();
 
 			} catch (SQLException e1) {
-
 				e1.printStackTrace();
 			} catch (DataInvalidException e2) {
 				JOptionPane.showMessageDialog(null, e2.getMessage());
+			} catch (DateInvalidException e3) {
+				JOptionPane.showMessageDialog(null, e3.getMessage());
 			}
-
 		}
 
 		else if (ae.getSource() == reset) {
 
-			drugName.setText("");
-			quantity.setText("");
-			drugCostPrice.setText("");
-			drugSalePrice.setText("");
-			companyName.setText("");
-			supplierContact.setText("");
-
+			reset();
 		}
 
 	}
@@ -180,6 +195,42 @@ public class UpdateDrug extends JFrame implements ActionListener {
 		panelSize.setSize(width - 100, height - 100);
 		return panelSize;
 
+	}
+
+	private void getData() throws SQLException {
+		String updateQuery = "update medicine set drugCostPrice=?,drugSalePrice=?,supplierContact=?,drugQuantity=?,mfg=?,EXP=?,companyNames=? where drugBarcode='"
+				+ drugBarcode.getText() + "'";
+		Date md = new Date(mfg.getDate().getTime());
+		Date exp = new Date(expiry.getDate().getTime());
+
+		PreparedStatement ps = con.prepareStatement(updateQuery);
+		ps.setFloat(1, Float.parseFloat(drugCostPrice.getText()));
+		ps.setFloat(2, Float.parseFloat(drugSalePrice.getText()));
+		ps.setString(3, supplierContact.getText());
+		ps.setInt(4, Integer.parseInt(quantity.getText()));
+		ps.setDate(5, md);
+		ps.setDate(6, exp);
+		ps.setString(7, companyName.getText());
+		int result = ps.executeUpdate();
+		if (result != 0) {
+			JOptionPane.showMessageDialog(null, "Medicine updated successfully");
+			reset();
+		} else {
+			JOptionPane.showMessageDialog(null, "Barcode is Wrong", "", JOptionPane.WARNING_MESSAGE);
+		}
+		con.close();
+
+	}
+
+	private void reset() {
+		drugBarcode.setText("");
+		quantity.setText("");
+		drugCostPrice.setText("");
+		drugSalePrice.setText("");
+		companyName.setText("");
+		supplierContact.setText("");
+		mfg.setDate(null);
+		expiry.setDate(null);
 	}
 
 }

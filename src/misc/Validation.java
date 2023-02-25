@@ -63,6 +63,12 @@ public class Validation implements WindowListener {
 	}
 
 	public static void isPriceValid(String msg) throws DataInvalidException {
+		if(msg==null) {
+			throw new DataInvalidException("Price field cannot be null ");
+		}
+		if(msg.equals("")) {
+			throw new DataInvalidException("Price field cannot be null ");
+		}
 		char a[]=msg.toCharArray();
 		for(char t:a) {
 			if(!(t>='0' && t<='9' || t=='.')) 
@@ -72,8 +78,12 @@ public class Validation implements WindowListener {
 	
 
 	
-	public static void isNumberValid(String msg) throws DataInvalidException {
+	public static void isNumberValid(String msg) throws DataInvalidException {			
+		
 		if(msg==null) {
+			throw new DataInvalidException("Quantity field cannot be null ");
+		}
+		if(msg.equals("")) {
 			throw new DataInvalidException("Quantity field cannot be null ");
 		}
 		char a[]=msg.toCharArray();
@@ -88,7 +98,7 @@ public class Validation implements WindowListener {
 	public static void characterStringValid(String msg) throws DataInvalidException {
 		char a[]=msg.toCharArray();
 		for(char t:a) {
-			if(!(t>='a' && t<='z' || t>='A' && t<='Z')) {
+			if(!(t>='a' && t<='z' || t>='A' && t<='Z' || t==' ')) {
 				throw new DataInvalidException("Only Alphabate character are allowed");
 			}
 		}
