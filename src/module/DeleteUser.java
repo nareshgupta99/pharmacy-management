@@ -146,7 +146,6 @@ public class DeleteUser extends JFrame implements MouseListener,ActionListener {
 		deleteButton.setEnabled(true);
 		 row=table.getSelectedRow();
 		 userName=tableModel.getValueAt(row,0).toString();
-		 System.out.println(userName);
 
 	}
 

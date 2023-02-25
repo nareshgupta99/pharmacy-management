@@ -60,6 +60,7 @@ public class AddMedicine extends JFrame implements ActionListener{
     JButton add;
     JButton reset;
     JPanel panel;
+    String barcodeValue;
     
     Connection con;
     public AddMedicine() {
@@ -190,7 +191,9 @@ public class AddMedicine extends JFrame implements ActionListener{
         
         add.addActionListener(this);
         reset.addActionListener(this);
-
+        
+        drugBarcode.setEditable(false);
+        drugBarcode.setBackground(Color.WHITE);
         
         c.add(panel);
         setVisible(true);
@@ -200,18 +203,26 @@ public class AddMedicine extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
     	if(e.getSource()== add) {
+    		if(barcodeValue==null || barcodeValue.equals("")) {
+    			if(!(drugName.getText().equals("")|| drugName==null) ){
+    				barcodeValue=PharmacyDb.genrateBarcode(drugName.getText());
+    				drugBarcode.setText(barcodeValue);
+    			}
+    		}
+    		
+    		
          try {
         	 
         	 /* ********************** Validation *************************** */
-        	 Validation.isPriceValid(drugCostPrice.getText());
-        	 Validation.isPriceValid(drugSalePrice.getText());
+        	 Validation.isPriceValid(drugCostPrice.getText(),"Cost Price");
+        	 Validation.isPriceValid(drugSalePrice.getText(),"Sale Price");
         	 Validation.isNumberValid(drugQuantity.getText());
         	 Validation.isPhoneValid(supplierContact.getText());
         	 Validation.isMfgValid(mfg.getDate());
         	 Validation.isExpiryValid(expiry.getDate());
-        	 Validation.characterStringValid(drugName.getText());
-        	 Validation.characterStringValid(companyName.getText());
-        	 Validation.characterStringValid(supplierName.getText());
+        	 Validation.characterStringValid(drugName.getText(),"drug Name");
+        	 Validation.characterStringValid(companyName.getText(),"company Name");
+        	 Validation.characterStringValid(supplierName.getText(),"supplierName");
         	 
         	 addMedicineData();
         	 
@@ -275,7 +286,7 @@ public class AddMedicine extends JFrame implements ActionListener{
     	 
 		PreparedStatement ps=con.prepareStatement(query);
 		ps.setString(1, drugName.getText());
-		ps.setString(2, drugBarcode.getText());
+		ps.setString(2, barcodeValue);
 		ps.setString(3, supplierName.getText());
 		ps.setFloat(4, Float.parseFloat(drugCostPrice.getText()));
 		ps.setString(5, drugPurpose.getText());
@@ -287,7 +298,8 @@ public class AddMedicine extends JFrame implements ActionListener{
 		ps.setString(11, companyName.getText());
 		ps.setString(12, drugType.getText());
 		ps.executeUpdate();
-		 JOptionPane.showMessageDialog(null,"Medicine added successfully");
+		 JOptionPane.showMessageDialog(null,barcodeValue+" Medicine added successfully");
+		 barcodeValue=null;
 		con.close();
 		resetField();
 	}

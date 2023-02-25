@@ -204,11 +204,16 @@ public class AddUser extends JFrame implements ActionListener
      {
               if(add==ae.getSource())
                {
+            	  
+      			
             	  String query="insert into user(user_name,Dob,Address,phone,salary,Gender,password)values(?,?,?,?,?,?,?)";
             	  PreparedStatement ps;
 				try {
+					Validation.checkPassword(password.getText());
+					Validation.characterStringValid(userName.getText(), "User Name");
+					Validation.characterStringValid(address.getText(), " Address");
 					Validation.isPhoneValid(phone.getText());
-					Validation.isPriceValid(salary.getText());
+					Validation.isPriceValid(salary.getText()," salary");
 					Validation.isdobValid(dob.getDate());
 					 Date db=new  Date(dob.getDate().getTime());
 					ps = con.prepareStatement(query);
@@ -223,7 +228,7 @@ public class AddUser extends JFrame implements ActionListener
 					JOptionPane.showMessageDialog(null,"User added successfully");
 				}  
 				catch(DataInvalidException e2) {
-		        	 JOptionPane.showMessageDialog(null,e2.getMessage());
+		        	 JOptionPane.showMessageDialog(null,e2.getMessage()," warning",JOptionPane.WARNING_MESSAGE);
 		         }
 				catch(DateInvalidException e2) {
 		        	 JOptionPane.showMessageDialog(null,e2.getMessage());

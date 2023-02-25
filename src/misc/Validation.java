@@ -4,6 +4,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.Date;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import exceptions.DataInvalidException;
@@ -24,7 +25,7 @@ public class Validation implements WindowListener {
 		}
 		
 		else if(date.before(new java.util.Date())) {
-		 throw new DateInvalidException("expiry date is before as manufactured date");
+		 throw new DateInvalidException("expiry date is before as current date");
 	 }
 	 
 	
@@ -62,20 +63,27 @@ public class Validation implements WindowListener {
 			
 	}
 
-	public static void isPriceValid(String msg) throws DataInvalidException {
+	public static void isPriceValid(String msg,String fieldValue) throws DataInvalidException {
 		if(msg==null) {
-			throw new DataInvalidException("Price field cannot be null ");
+			throw new DataInvalidException(fieldValue+" Price field cannot be null ");
 		}
 		if(msg.equals("")) {
-			throw new DataInvalidException("Price field cannot be null ");
+			throw new DataInvalidException(fieldValue+" Price field cannot be null ");
 		}
 		char a[]=msg.toCharArray();
 		for(char t:a) {
 			if(!(t>='0' && t<='9' || t=='.')) 
-				throw new DataInvalidException("price can only numeric type");
+				throw new DataInvalidException(fieldValue+" price can only numeric type");
 		}
 	}
 	
+	public static void checkPassword(String password) throws DataInvalidException {
+	
+		if ( password.isEmpty()) {
+			
+				throw new DataInvalidException("user name and password cannot empty");
+			}
+	}
 
 	
 	public static void isNumberValid(String msg) throws DataInvalidException {			
@@ -95,7 +103,13 @@ public class Validation implements WindowListener {
 		
 	}
 	
-	public static void characterStringValid(String msg) throws DataInvalidException {
+	public static void characterStringValid(String msg,String fieldName) throws DataInvalidException {
+		if(msg==null) {
+			throw new DataInvalidException(fieldName+" field cannot be null ");
+		}
+		if(msg.equals("")) {
+			throw new DataInvalidException(fieldName+" field cannot be null ");
+		}
 		char a[]=msg.toCharArray();
 		for(char t:a) {
 			if(!(t>='a' && t<='z' || t>='A' && t<='Z' || t==' ')) {

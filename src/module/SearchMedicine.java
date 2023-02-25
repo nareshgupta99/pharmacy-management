@@ -174,7 +174,6 @@ public class SearchMedicine extends JFrame implements ItemListener,ActionListene
 		while (resultSet.next()) {
 			String name = resultSet.getString("drugName");
 			String type = resultSet.getString("drugType");
-			String code = resultSet.getString("drugCode");
 			String barCode = resultSet.getString("drugBarcode");
 			String quantity = resultSet.getString("drugQuantity");
 			String suplier_contact = resultSet.getString("supplierContact");
@@ -184,7 +183,7 @@ public class SearchMedicine extends JFrame implements ItemListener,ActionListene
 			Date exp = resultSet.getDate("EXP");
 			
 
-			Object[] data = { name, type, code, barCode, suplier_contact, sale_price, cost_price, mfg, exp,quantity };
+			Object[] data = { name, type,  barCode, suplier_contact, sale_price, cost_price, mfg, exp,quantity };
 
 			tableModel.addRow(data);
 
@@ -277,7 +276,6 @@ public class SearchMedicine extends JFrame implements ItemListener,ActionListene
 		
 		tableModel.addColumn("Name");
 		tableModel.addColumn("Type");
-		tableModel.addColumn("Code");
 		tableModel.addColumn("Bar_Code");
 		tableModel.addColumn("Supplier_Contact");
 		tableModel.addColumn("Sale_Price");

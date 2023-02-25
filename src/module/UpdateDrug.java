@@ -160,11 +160,11 @@ public class UpdateDrug extends JFrame implements ActionListener {
 				/* ********************** Validation *************************** */
 				Validation.isNumberValid(quantity.getText());
 				Validation.isPhoneValid(supplierContact.getText());
-				Validation.isPriceValid(drugCostPrice.getText());
-				Validation.isPriceValid(drugSalePrice.getText());
+				Validation.isPriceValid(drugCostPrice.getText()," Cost Price");
+				Validation.isPriceValid(drugSalePrice.getText()," Sale Price");
 				Validation.isMfgValid(mfg.getDate());
 				Validation.isExpiryValid(expiry.getDate());
-				Validation.characterStringValid(companyName.getText());
+				Validation.characterStringValid(companyName.getText(),"companyName");
 
 				getData();
 
