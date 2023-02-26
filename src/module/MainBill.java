@@ -207,7 +207,7 @@ public class MainBill extends JFrame implements ActionListener {
 				
 		while(i.hasNext()) {
 			TempBill b=(TempBill) i.next();
-			String query="insert into sale(drugBarcode,drugQuantity,date) values (?,?,?);";
+			String query="insert into sale(drugBarcode,drugQuantity,saleDate) values (?,?,?);";
 			PreparedStatement ps=connection.prepareStatement(query);
 			ps.setString(1, b.barCode);
 			ps.setInt(2, b.qty);
@@ -216,6 +216,8 @@ public class MainBill extends JFrame implements ActionListener {
 
 		}
 		 JOptionPane.showMessageDialog(null,"Bill generated");
+		 clearTable();
+		 list.clear();
 	}
 	
 

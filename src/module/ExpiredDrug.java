@@ -35,9 +35,9 @@ public class ExpiredDrug extends JFrame implements ItemListener  {
 	JLabel sortByLabel;
 	JComboBox sortBy;
 	JTable table;
-	String list[] = { "Quantity",  "Price" };
+	String list[] = { "Select","Quantity",  "Price" };
 	Container c;
-
+	String date;
 	Connection con = PharmacyDb.getConnection();
 	DefaultTableModel tableModel=new DefaultTableModel();
 	public ExpiredDrug()  {
@@ -45,7 +45,7 @@ public class ExpiredDrug extends JFrame implements ItemListener  {
 		getTableColoumnModel();
 		PreparedStatement ps;
 		java.time.LocalDate d=java.time.LocalDate.now();
-		String date=d.toString();
+		date=d.toString();
 		
 		try {
 			ps = con.prepareStatement("select drugName,drugSalePrice,drugCostPrice,mfg,EXP,drugQuantity from medicine where EXP < '"+date+"'");
@@ -117,7 +117,7 @@ public class ExpiredDrug extends JFrame implements ItemListener  {
 			clearTable();
 			PreparedStatement ps;
 			try {
-				ps = con.prepareStatement("select * from medicine order by drugCostPrice");
+				ps = con.prepareStatement("select drugName,drugSalePrice,drugCostPrice,mfg,EXP,drugQuantity from medicine where EXP < '"+date+"' order by drugCostPrice");
 				getData(ps);
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
@@ -130,7 +130,7 @@ public class ExpiredDrug extends JFrame implements ItemListener  {
 			clearTable();
 			PreparedStatement ps;
 			try {
-				ps = con.prepareStatement("select * from medicine order by drugQuantity ");
+				ps = con.prepareStatement("select drugName,drugSalePrice,drugCostPrice,mfg,EXP,drugQuantity from medicine where EXP < '"+date+"' order by drugQuantity");
 				getData(ps);
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block

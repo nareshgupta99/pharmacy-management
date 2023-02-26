@@ -145,11 +145,14 @@ public class Sales extends JFrame implements ActionListener {
 				String query="select drugName,drugType,drugPurpose,drugSalePrice from medicine where drugBarcode='" + id+ "' AND  EXP>='"+date+"'";
 				st = con.prepareStatement(query);
 				ResultSet resultSet = st.executeQuery();
-				resultSet.next();
+				if(resultSet.next()) {
 				NameTF.setText(resultSet.getString(1));
 				TypeTF.setText(resultSet.getString(2));
 				PurposeTF.setText(resultSet.getString(3));
-				PriceTF.setText(resultSet.getString(4));
+				PriceTF.setText(resultSet.getString("drugSalePrice"));
+				}else {
+					JOptionPane.showMessageDialog(null,"No Record Found");
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

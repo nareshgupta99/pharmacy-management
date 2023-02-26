@@ -168,9 +168,10 @@ public class SearchMedicine extends JFrame implements ItemListener,ActionListene
 
 		try {
 		ResultSet resultSet = ps.executeQuery();
-		if(!resultSet.next()) {
+		if(!resultSet.isBeforeFirst()) {
 			JOptionPane.showMessageDialog(null,"No Record Found");
 		}
+
 		while (resultSet.next()) {
 			String name = resultSet.getString("drugName");
 			String type = resultSet.getString("drugType");
@@ -201,7 +202,7 @@ public class SearchMedicine extends JFrame implements ItemListener,ActionListene
 
 		
 		if(   e.getSource()==searchButton && comboBoxValue.equals("DrugName")){
-			String query="Select * from medicine where drugName like '"+fieldValue+"%';";
+			String query="Select * from medicine where drugName like '%"+fieldValue+"%';";
 			PreparedStatement ps;
 		try {
 			ps = connection.prepareStatement(query);
@@ -214,7 +215,7 @@ public class SearchMedicine extends JFrame implements ItemListener,ActionListene
 	}
 		
 		if(  e.getSource()==searchButton && comboBoxValue.equals("DrugBarcode")){
-			String query="Select * from medicine where drugBarcode like '"+fieldValue+"%'";
+			String query="Select * from medicine where drugBarcode like '%"+fieldValue+"%'";
 			PreparedStatement ps;
 			
 		try {
@@ -228,15 +229,18 @@ public class SearchMedicine extends JFrame implements ItemListener,ActionListene
 	}
 		
 		 if(e.getSource()==deleteButton) {
+			 int input = JOptionPane.showConfirmDialog(null, "Are You Sure to Delete ?");
+				if(input==0) {
 			String query="delete from medicine where drugBarcode='"+barcode+"'";
 			try {
 				PreparedStatement ps = connection.prepareStatement(query);
-				boolean b=ps.execute();
+				ps.execute();
 				tableModel.removeRow(row);
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
 		}
+	}
 	}
 
 		
@@ -290,10 +294,8 @@ public class SearchMedicine extends JFrame implements ItemListener,ActionListene
 	public void mouseClicked(MouseEvent e) {
 		deleteButton.setEnabled(true);
 		 row=table.getSelectedRow();
-		 barcode=tableModel.getValueAt(row,3).toString();
-		 System.out.println(barcode);
-
-		
+		 barcode=tableModel.getValueAt(row,2).toString();	
+		 System.out.println(row);
 	}
 
 	@Override

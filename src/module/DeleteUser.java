@@ -18,6 +18,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -180,15 +181,19 @@ public class DeleteUser extends JFrame implements MouseListener,ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		int input = JOptionPane.showConfirmDialog(null, "Are You Sure to Delete ?");
+		if(input==0) {
+		
 		String query="delete from user where user_name='"+userName+"' And role='user'";
 		try {
 			PreparedStatement ps=con.prepareStatement(query);
-			boolean r=ps.execute();
+				ps.execute();
 				clearTable();
 				getData();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
+	}
 		
 	}
 
