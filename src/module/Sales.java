@@ -72,7 +72,6 @@ public class Sales extends JFrame implements ActionListener {
 		add(Purpose);
 		add(Price);
 		add(Qty);
-		addWindowListener(new Validation());
 //        ---------------------------------------------------
 		BatchNoTF = new JTextField();
 		NameTF = new JTextField();

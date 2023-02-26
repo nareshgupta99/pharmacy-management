@@ -96,7 +96,6 @@ public class MainBill extends JFrame implements ActionListener {
 		sale.addActionListener(this);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setLocationRelativeTo(null);
 		setSize(1100, 500);
 		c = getContentPane();
 		c.setLayout(null);
@@ -107,6 +106,7 @@ public class MainBill extends JFrame implements ActionListener {
 		c.add(totalField);
 		getData(list);
 		addWindowListener(new Validation());
+		setLocationRelativeTo(null);
 
 		setVisible(true);
 
@@ -207,11 +207,12 @@ public class MainBill extends JFrame implements ActionListener {
 				
 		while(i.hasNext()) {
 			TempBill b=(TempBill) i.next();
-			String query="insert into sale(drugBarcode,drugQuantity,saleDate) values (?,?,?);";
+			String query="insert into sale(drugBarcode,drugSalePrice,̥drugQuantity,saleDate) values (?,?,?);";
 			PreparedStatement ps=connection.prepareStatement(query);
 			ps.setString(1, b.barCode);
-			ps.setInt(2, b.qty);
-			ps.setDate(3, date);
+			ps.setFloat(2, b.price);
+			ps.setInt(3, b.qty);
+			ps.setDate(4, date);
 			ps.executeUpdate();
 
 		}
