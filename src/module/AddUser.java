@@ -206,7 +206,7 @@ public class AddUser extends JFrame implements ActionListener
                {
             	  
       			
-            	  String query="insert into user(user_name,Dob,Address,phone,salary,Gender,password)values(?,?,?,?,?,?,?)";
+            	  String query="insert into user(user_name,Dob,Address,phone,salary,Gender,password,role)values(?,?,?,?,?,?,?,?)";
             	  PreparedStatement ps;
 				try {
 					Validation.checkPassword(password.getText());
@@ -223,9 +223,11 @@ public class AddUser extends JFrame implements ActionListener
 					ps.setString(4,phone.getText());
 					ps.setString(5,salary.getText());
 					ps.setString(6,gender.getText());
-					ps.setString(7, role.getSelectedItem().toString());
+					ps.setString(7,password.getText());
+					ps.setString(8, role.getSelectedItem().toString());
 					ps.executeUpdate();
 					JOptionPane.showMessageDialog(null,"User added successfully");
+					reset();
 				}  
 				catch(DataInvalidException e2) {
 		        	 JOptionPane.showMessageDialog(null,e2.getMessage()," warning",JOptionPane.WARNING_MESSAGE);
@@ -244,14 +246,19 @@ public class AddUser extends JFrame implements ActionListener
         
              else if(reset==ae.getSource())
                {
-            	 userName.setText("");
-            	 address.setText("");
-            	 phone.setText("");
-            	 salary.setText("");
-    		   gender.setText("");
-    		   password.setText("");
-    		                }
+            	reset();
+            	}
     }
+     
+     private void reset() {
+    	 userName.setText("");
+    	 address.setText("");
+    	 phone.setText("");
+    	 salary.setText("");
+	   gender.setText("");
+	   password.setText("");
+	    dob.setDate(null);
+     }
      
 
      
