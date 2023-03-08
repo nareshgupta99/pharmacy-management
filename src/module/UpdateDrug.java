@@ -41,6 +41,12 @@ public class UpdateDrug extends JFrame implements ActionListener {
 	Connection con;
 
 	public UpdateDrug() {
+		
+		 ImageIcon icon=new ImageIcon("image2.jpg");
+	   		JLabel label=new JLabel(icon);
+	   		Dimension size=label.getPreferredSize();
+	   		label.setBounds(0, 0, size.width, size.height);
+
 		/************* setting frame Behaviour******************************** */
 
 		setTitle("update");
@@ -146,6 +152,7 @@ public class UpdateDrug extends JFrame implements ActionListener {
 		update.addActionListener(this);
 		addWindowListener(new Validation());
 
+		panel.add(label);
 		c.add(panel);
 
 		setVisible(true);

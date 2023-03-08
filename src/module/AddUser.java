@@ -2,22 +2,24 @@ package module;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
@@ -31,19 +33,25 @@ public class AddUser extends JFrame implements ActionListener
 {
 	Container c;
 	JLabel userNameLabel,dobLabel,addressLabel,phoneLabel,salaryLabel,genderLabel,passwordLabel,userTypeLabel,heading;
-	JTextField userName,address,phone,salary,gender;
+	JTextField userName,address,phone,salary;
 	JPasswordField password;
 	JButton add,reset;
 	Font ft1;
 	JDateChooser dob;
 	 Connection con;
 	 JComboBox role;
-	 
+	 JRadioButton male,female;
+	 ButtonGroup buttonGroup;
+	 String gender;
          
 
        public AddUser()
         {
-    	   con=PharmacyDb.getConnection();
+			ImageIcon icon = new ImageIcon("image3.jpg");
+			JLabel label = new JLabel(icon);
+			Dimension size = label.getPreferredSize();
+			label.setBounds(0, 0, size.width, size.height);
+	    	   con=PharmacyDb.getConnection();
 	 
             setTitle("Add User");
             setSize(940,520);
@@ -118,10 +126,16 @@ public class AddUser extends JFrame implements ActionListener
      
        genderLabel.setBounds(25,360,120,30);
 
-       gender=new JTextField();
-       gender.setFont(ft1);
-       gender.setBounds(190,365,210,25);
-        
+       male=new JRadioButton(" Male");    
+       female=new JRadioButton(" Female"); 
+       male.setFont(ft1);
+      female.setFont(ft1);
+       male.setBounds(190,365,100,30);
+       female.setBounds(300,365,120,30);
+       
+        buttonGroup=new ButtonGroup();
+       buttonGroup.add(male);
+       buttonGroup.add(female);
        
 
        passwordLabel=new JLabel("Password");
@@ -185,11 +199,13 @@ public class AddUser extends JFrame implements ActionListener
           c.add(address);
           c.add(phone);
           c.add(salary);
-           c.add(gender);
+          c.add(male);
+          c.add(female);
            c.add(password);
            c.add(role);
            c.add(add);
             c.add(reset);
+            c.add(label);
             
             addWindowListener(new Validation());
         setVisible(true);
@@ -202,9 +218,15 @@ public class AddUser extends JFrame implements ActionListener
 
      public void actionPerformed(ActionEvent ae)
      {
-              if(add==ae.getSource())
+    	 if(male.isSelected()) {
+    		 gender=male.getText();
+    	 }
+    	  if(female.isSelected()) {
+    		 gender=female.getText();
+    	 }
+    	  System.out.println(gender);
+    	    if(add==ae.getSource())
                {
-            	  
       			
             	  String query="insert into user(user_name,Dob,Address,phone,salary,Gender,password,role)values(?,?,?,?,?,?,?,?)";
             	  PreparedStatement ps;
@@ -222,7 +244,7 @@ public class AddUser extends JFrame implements ActionListener
 					ps.setString(3, address.getText());
 					ps.setString(4,phone.getText());
 					ps.setString(5,salary.getText());
-					ps.setString(6,gender.getText());
+					ps.setString(6,gender);
 					ps.setString(7,password.getText());
 					ps.setString(8, role.getSelectedItem().toString());
 					ps.executeUpdate();
@@ -255,7 +277,6 @@ public class AddUser extends JFrame implements ActionListener
     	 address.setText("");
     	 phone.setText("");
     	 salary.setText("");
-	   gender.setText("");
 	   password.setText("");
 	    dob.setDate(null);
      }

@@ -46,7 +46,7 @@ public class SalesReport extends JFrame implements ItemListener {
 
 		getTableColoumnModel();
 		PreparedStatement ps;
-		String query = "select m.drugName,m.drugCostPrice,m.drugSalePrice ,s.drugBarcode ,s.drugQuantity,s.date FROM medicine as m inner join sale as s on m.drugBarcode=s.drugBarcode";
+		String query = "select m.drugName,m.drugCostPrice,m.drugSalePrice ,s.drugBarcode ,s.drugQuantity,s.saleDate FROM medicine as m inner join sale as s on m.drugBarcode=s.drugBarcode";
 		try {
 			ps = con.prepareStatement(query);
 			getData(ps);
@@ -123,7 +123,7 @@ public class SalesReport extends JFrame implements ItemListener {
 			clearTable();
 			PreparedStatement ps;
 			try {
-				ps = con.prepareStatement("select m.drugName,m.drugCostPrice,m.drugSalePrice ,s.drugBarcode ,s.drugQuantity,s.date FROM medicine as m  inner join sale as s on m.drugBarcode=s.drugBarcode order by m.drugSalePrice desc");
+				ps = con.prepareStatement("select m.drugName,m.drugCostPrice,m.drugSalePrice ,s.drugBarcode ,s.drugQuantity,s.saleDate FROM medicine as m  inner join sale as s on m.drugBarcode=s.drugBarcode order by m.drugSalePrice desc");
 				getData(ps);
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
@@ -136,7 +136,7 @@ public class SalesReport extends JFrame implements ItemListener {
 			clearTable();
 			PreparedStatement ps;
 			try {
-				ps = con.prepareStatement("select m.drugName,m.drugCostPrice,m.drugSalePrice ,s.drugBarcode ,s.drugQuantity,s.date FROM medicine as m  inner join sale as s on m.drugBarcode=s.drugBarcode order by m.drugQuantity");
+				ps = con.prepareStatement("select m.drugName,m.drugCostPrice,m.drugSalePrice ,s.drugBarcode ,s.drugQuantity,s.saleDate FROM medicine as m  inner join sale as s on m.drugBarcode=s.drugBarcode order by m.drugQuantity");
 				getData(ps);
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
@@ -149,7 +149,7 @@ public class SalesReport extends JFrame implements ItemListener {
 			clearTable();
 			PreparedStatement ps;
 			try {
-				ps = con.prepareStatement("select m.drugName,m.drugCostPrice,m.drugSalePrice ,s.drugBarcode ,s.drugQuantity,s.date FROM medicine as m  inner join sale as s on m.drugBarcode=s.drugBarcode order by s.date desc");
+				ps = con.prepareStatement("select m.drugName,m.drugCostPrice,m.drugSalePrice ,s.drugBarcode ,s.drugQuantity,s.saleDate FROM medicine as m  inner join sale as s on m.drugBarcode=s.drugBarcode order by s.saleDate desc");
 				getData(ps);
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
@@ -183,7 +183,7 @@ public class SalesReport extends JFrame implements ItemListener {
 				String quantity = resultSet.getString("drugQuantity");
 				String cost_price = resultSet.getString("drugCostPrice");
 				String sale_price = resultSet.getString("drugSalePrice");
-				String date = resultSet.getString("date");
+				String date = resultSet.getString("saleDate");
 				getTotalSale(resultSet.getFloat("drugSalePrice"), resultSet.getInt("drugQuantity"));
 				Object[] data = { barCode, name, cost_price, sale_price, quantity,date };
 

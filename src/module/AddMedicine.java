@@ -13,6 +13,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -81,13 +82,17 @@ public class AddMedicine extends JFrame implements ActionListener{
         panel = new JPanel();
         panel.setLocation(50, 25);
         Dimension panelSize=getPanelSize(screenSize.width-300,screenSize.height-300);
+        System.out.println(screenSize.height);
+        System.out.println(screenSize.width);
         panel.setBackground(Color.WHITE);
         panel.setSize(panelSize);
         panel.setLayout(null);
         
-        
+
         
         /**************** creating object  ***************** */
+   		ImageIcon icon=new ImageIcon("image2.jpg");
+   		JLabel label=new JLabel(icon);
         drugSupplierLabel=new JLabel("Drug Supplier:");
         drugNameLabel = new JLabel("Drug Name:");
         drugTypeLabel = new JLabel("Drug Type:");
@@ -185,6 +190,8 @@ public class AddMedicine extends JFrame implements ActionListener{
         panel.add(mfg);
         panel.add(expiry);
         
+        Dimension size=label.getPreferredSize();
+        label.setBounds(0, 0, size.width, size.height);
         
         panel.add(add);
         panel.add(reset);
@@ -194,7 +201,7 @@ public class AddMedicine extends JFrame implements ActionListener{
         
         drugBarcode.setEditable(false);
         drugBarcode.setBackground(Color.WHITE);
-        
+        panel.add(label);
         c.add(panel);
         setVisible(true);
      

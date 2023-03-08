@@ -1,6 +1,7 @@
 package module;
 
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,6 +35,12 @@ public class ResetPassword extends JFrame implements ActionListener {
 	int result;
 
 	public ResetPassword() {
+		
+		ImageIcon ico = new ImageIcon("image3.jpg");
+		JLabel label = new JLabel(ico);
+		Dimension size = label.getPreferredSize();
+		label.setBounds(0, 0, size.width, size.height);
+		
 		con = PharmacyDb.getConnection();
 		setTitle("Reset Password");
 		setSize(700, 550);
@@ -87,6 +94,7 @@ public class ResetPassword extends JFrame implements ActionListener {
 		b2.addActionListener(this);
 		b2.setBounds(300, 380, 120, 40);
 		c.add(b2);
+		c.add(label);
 
 		addWindowListener(new Validation());
 

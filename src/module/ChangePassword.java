@@ -1,6 +1,7 @@
 package module;
 
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,7 +30,6 @@ public class ChangePassword extends JFrame implements ActionListener {
 	JPasswordField oldPassword, newPassword;
 	JPasswordField confirmPassword;
 	JButton b1, b2;
-	ImageIcon img;
 	Font ft1;
 	Connection con;
 	PreparedStatement st;
@@ -37,6 +37,11 @@ public class ChangePassword extends JFrame implements ActionListener {
 	int result;
 	
 	public ChangePassword() {
+		
+		ImageIcon ico = new ImageIcon("image3.jpg");
+		JLabel label = new JLabel(ico);
+		Dimension size = label.getPreferredSize();
+		label.setBounds(0, 0, size.width, size.height);
 		con = PharmacyDb.getConnection();
 		setTitle("Change Password");
 		setSize(700, 550);
@@ -44,9 +49,7 @@ public class ChangePassword extends JFrame implements ActionListener {
 		setLocationRelativeTo(null);
 		setLayout(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		ImageIcon icon=new ImageIcon("PHARMACYIMAGE1.jpg");
-		bg=new JLabel(icon);
-
+		
 		c = getContentPane();
 
 		ft1 = new Font("Verdana", Font.BOLD, 18);
@@ -92,7 +95,7 @@ public class ChangePassword extends JFrame implements ActionListener {
 		b2.addActionListener(this);
 		b2.setBounds(300, 380, 120, 40);
 		c.add(b2);
-		c.add(bg);
+		c.add(label);
 
 		addWindowListener(new Validation());
 

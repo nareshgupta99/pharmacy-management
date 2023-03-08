@@ -42,7 +42,7 @@ public class UserList extends JFrame {
 		getData();
 
 		/* ****************creating object********** */
-		heading = new JLabel("DELETE USER");
+		heading = new JLabel("USERS");
 		headingContainer = new JPanel();
 		tableContainer = new JPanel();
 		table = new JTable(tableModel);

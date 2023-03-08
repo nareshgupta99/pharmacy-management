@@ -1,6 +1,7 @@
 package module;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -11,6 +12,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -46,6 +48,13 @@ public class Sales extends JFrame implements ActionListener {
 	public static JFrame frame;
 	String date;
 	public Sales() {
+		
+		ImageIcon icon = new ImageIcon("sale.jpg");
+		JLabel label = new JLabel(icon);
+		Dimension size = label.getPreferredSize();
+		label.setBounds(0, 0, size.width, size.height);
+		
+		
 		frame=this;
 		java.time.LocalDate d=java.time.LocalDate.now();
 		 date=d.toString();
@@ -119,6 +128,7 @@ public class Sales extends JFrame implements ActionListener {
 		add(Add);
 		add(Continue);
 		add(Reset);
+		add(label);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		Reset.addActionListener(this);

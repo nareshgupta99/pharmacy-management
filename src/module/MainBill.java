@@ -138,12 +138,11 @@ public class MainBill extends JFrame implements ActionListener {
 	/**
 	 * Removes all the rows in the table
 	 */
-	public void clearTable() {
-		System.out.println("clear");
-		DefaultTableModel dm = tableModel;
-		dm.getDataVector().removeAllElements();
-		revalidate();
-	}
+		public void clearTable() {
+			DefaultTableModel dm = (DefaultTableModel) table.getModel();
+			dm.getDataVector().removeAllElements();
+			revalidate();
+		}
 	public void getTableColoumnModel() {
 		tableModel = new DefaultTableModel();
 		tableModel.addColumn("Bar Code");
@@ -168,7 +167,11 @@ public class MainBill extends JFrame implements ActionListener {
 				}
 				
 			}
-			
+			clearTable();
+			while(i.hasNext()) {
+				i.remove();
+			}
+			genrate.setEnabled(false);
 		}
 		if(e.getSource()==sale) {
 			Sales.setSaleVisible(true);
@@ -217,8 +220,7 @@ public class MainBill extends JFrame implements ActionListener {
 
 		}
 		 JOptionPane.showMessageDialog(null,"Bill generated");
-		 clearTable();
-//		 list.clear();
+		 
 	}
 	
 
