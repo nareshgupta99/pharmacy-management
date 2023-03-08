@@ -4,10 +4,7 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -23,43 +20,41 @@ import misc.PharmacyDb;
 import misc.Security;
 import misc.Validation;
 
-public class ChangePassword extends JFrame implements ActionListener {
+public class ResetPassword extends JFrame implements ActionListener {
 	Container c;
-	JLabel oldPasswordLabel, newPasswordLabel, confirmPasswordLabel, bg;
-	JPasswordField oldPassword, newPassword;
+	JLabel userNameLabel, newPasswordLabel, confirmPasswordLabel, bg;
+	JPasswordField newPassword;
 	JPasswordField confirmPassword;
+	JTextField userName;
 	JButton b1, b2;
 	ImageIcon img;
 	Font ft1;
 	Connection con;
 	PreparedStatement st;
-	ResultSet rs;
 	int result;
-	
-	public ChangePassword() {
+
+	public ResetPassword() {
 		con = PharmacyDb.getConnection();
-		setTitle("Change Password");
+		setTitle("Reset Password");
 		setSize(700, 550);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setLayout(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		ImageIcon icon=new ImageIcon("PHARMACYIMAGE1.jpg");
-		bg=new JLabel(icon);
 
 		c = getContentPane();
 
 		ft1 = new Font("Verdana", Font.BOLD, 18);
 
-		oldPasswordLabel = new JLabel("Old Password");
-		oldPasswordLabel.setFont(ft1);
-		oldPasswordLabel.setBounds(100, 50, 150, 30);
-		c.add(oldPasswordLabel);
+		userNameLabel = new JLabel("User Name");
+		userNameLabel.setFont(ft1);
+		userNameLabel.setBounds(100, 50, 150, 30);
+		c.add(userNameLabel);
 
-		oldPassword = new JPasswordField();
-		oldPassword.setFont(ft1);
-		oldPassword.setBounds(300, 50, 170, 30);
-		c.add(oldPassword);
+		userName = new JTextField();
+		userName.setFont(ft1);
+		userName.setBounds(300, 50, 170, 30);
+		c.add(userName);
 
 		newPasswordLabel = new JLabel("New Password");
 		newPasswordLabel.setFont(ft1);
@@ -92,7 +87,6 @@ public class ChangePassword extends JFrame implements ActionListener {
 		b2.addActionListener(this);
 		b2.setBounds(300, 380, 120, 40);
 		c.add(b2);
-		c.add(bg);
 
 		addWindowListener(new Validation());
 
@@ -106,31 +100,34 @@ public class ChangePassword extends JFrame implements ActionListener {
 
 		else if (ae.getSource() == b1) {
 			String un, op, np, cp;
-			op = oldPassword.getText();
 			np = newPassword.getText();
 			cp = confirmPassword.getText();
 
 			if (np.equals(cp)) {
 				try {
-						st = con.prepareStatement("update user set password=? where user_name=?");
-						st.setString(1, np);
-						st.setString(2, Security.getUserName());
-						st.executeUpdate();
-						JOptionPane.showMessageDialog(null, "Password changed Successfully");
-						oldPassword.setText("");
-						newPassword.setText("");
-						confirmPassword.setText("");
-					
-					} catch (Exception e) {
-						System.out.print(e);
-				}
+					st = con.prepareStatement("update user set password=? where user_name=? and role!=?");
+					st.setString(1, np);
+					st.setString(2, userName.getText());
+					st.setString(3, "admin");
+					result = st.executeUpdate();
+				} catch (Exception e) {
+					e.printStackTrace();
 
 				}
-
 			} else {
 				JOptionPane.showMessageDialog(null, "New password & Confirm Password does not match");
+			}
+			if (result == 1) {
+				JOptionPane.showMessageDialog(null, "Password changed Successfully");
+				newPassword.setText("");
+				confirmPassword.setText("");
+				userName.setText("");
+			}
+			else if(result==0) {
+				JOptionPane.showMessageDialog(null, "Invalid User Name");
 			}
 
 		}
 
 	}
+}

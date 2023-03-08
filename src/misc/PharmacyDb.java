@@ -17,7 +17,7 @@ public class PharmacyDb {
 	private final static String SALE = "create Table if not exists sale(saleId integer auto_increment primary key , drugBarcode varchar(255),drugSalePrice FLOAT,drugQuantity integer,saleDate Date,foreign key(drugBarcode) references medicine(drugBarcode) on Delete set NULL); ";
 	private final static String USER = "create table if not exists user(user_name varchar(255) primary key,password varchar(255),role char(5) );";
 	private final static String MEDICINE = " create table if not exists medicine(DrugName Varchar(255),drugBarcode varchar(255) primary key, supplierName varchar(255),drugCostPrice float,drugPurpose varchar(255),drugSalePrice float,supplierContact char(12),mfg Date,EXP Date ,drugQuantity integer,companyNames varchar(255),drugType varchar(255) );";
-
+	private final static String BARCODE_SEQUENCE="create Table if not exists barcode_sequence(code integer)";
 	public static Connection getConnection() {
 		Connection con = null;
 		try {
@@ -75,5 +75,6 @@ public class PharmacyDb {
 		
 	}
 	
+
 
 }

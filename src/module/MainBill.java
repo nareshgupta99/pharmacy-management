@@ -139,7 +139,8 @@ public class MainBill extends JFrame implements ActionListener {
 	 * Removes all the rows in the table
 	 */
 	public void clearTable() {
-		DefaultTableModel dm = (DefaultTableModel) table.getModel();
+		System.out.println("clear");
+		DefaultTableModel dm = tableModel;
 		dm.getDataVector().removeAllElements();
 		revalidate();
 	}
@@ -170,7 +171,6 @@ public class MainBill extends JFrame implements ActionListener {
 			
 		}
 		if(e.getSource()==sale) {
-			System.out.println("sale");
 			Sales.setSaleVisible(true);
 			list.clear();
 			dispose();
@@ -207,7 +207,7 @@ public class MainBill extends JFrame implements ActionListener {
 				
 		while(i.hasNext()) {
 			TempBill b=(TempBill) i.next();
-			String query="insert into sale(drugBarcode,drugSalePrice,̥drugQuantity,saleDate) values (?,?,?);";
+			String query="insert into sale(drugBarcode,drugSalePrice,drugQuantity,saleDate) values (?,?,?,?);";
 			PreparedStatement ps=connection.prepareStatement(query);
 			ps.setString(1, b.barCode);
 			ps.setFloat(2, b.price);
@@ -218,7 +218,7 @@ public class MainBill extends JFrame implements ActionListener {
 		}
 		 JOptionPane.showMessageDialog(null,"Bill generated");
 		 clearTable();
-		 list.clear();
+//		 list.clear();
 	}
 	
 

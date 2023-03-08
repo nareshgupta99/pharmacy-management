@@ -2,14 +2,10 @@ package module;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -17,7 +13,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -29,8 +24,9 @@ import javax.swing.JWindow;
 import javax.swing.Timer;
 
 import misc.PharmacyDb;
+import misc.Security;
 
-public class Login extends JComponent implements ActionListener {
+public class Login extends Security implements ActionListener {
 
 	Timer timer;
 	JProgressBar progress;
@@ -51,7 +47,6 @@ public class Login extends JComponent implements ActionListener {
 	 public static boolean splashVisible=true;
 	 public static int progessValue=25;
 	public Login() {
-	
 		loginFrame=new JFrame("LOGIN FORM");
 		Font f = new Font("Arial", Font.BOLD, 12);
 		l1=new JLabel("MODE");
@@ -71,6 +66,7 @@ public class Login extends JComponent implements ActionListener {
 		loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         loginFrame.setLocationRelativeTo(null);
          background.setBounds(0,0,900,500);
+     
         
          l1.setBounds(220,120,140,30);
 	   l1.setFont(ft1);
@@ -169,9 +165,11 @@ public class Login extends JComponent implements ActionListener {
 					if (rs.next()) {
 						JOptionPane.showMessageDialog(message, "Login Successfull");
 						role=mode.getSelectedItem().toString();
+						Security.setUserName(userField.getText());
+						Security.setRole(role);
 
 						loginFrame.dispose();
-						HomePage hp = new HomePage(role);
+						HomePage hp = new HomePage();
 					} else {
 						JOptionPane.showMessageDialog(message, "Invalid userName and Password");
 					}
