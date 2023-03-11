@@ -38,13 +38,7 @@ public class Sales extends JFrame implements ActionListener {
 	JPanel f;
 	Connection con;
 	PreparedStatement st;
-	public static String bno;
-	public static String nm;
-	public static String typ;
-	public static String pu;
-	public static String pr;
-	public static String qty;
-
+	int quantity;
 	public static JFrame frame;
 	String date;
 	public Sales() {
@@ -151,7 +145,7 @@ public class Sales extends JFrame implements ActionListener {
 		} else if (ae.getSource() == check) {
 			try {
 				String id = BatchNoTF.getText();
-				String query="select drugName,drugType,drugPurpose,drugSalePrice from medicine where drugBarcode='" + id+ "' AND  EXP>='"+date+"'";
+				String query="select drugName,drugType,drugPurpose,drugSalePrice,drugQuantity from medicine where drugBarcode='" + id+ "' AND  EXP>='"+date+"'";
 				st = con.prepareStatement(query);
 				ResultSet resultSet = st.executeQuery();
 				if(resultSet.next()) {
@@ -159,6 +153,7 @@ public class Sales extends JFrame implements ActionListener {
 				TypeTF.setText(resultSet.getString(2));
 				PurposeTF.setText(resultSet.getString(3));
 				PriceTF.setText(resultSet.getString("drugSalePrice"));
+				quantity=resultSet.getInt("drugQuantity");
 				}else {
 					JOptionPane.showMessageDialog(null,"No Record Found");
 				}
@@ -176,15 +171,21 @@ public class Sales extends JFrame implements ActionListener {
 			
 				try {
 					Validation.isNumberValid(QtyTF.getText());
+					if(Integer.parseInt(QtyTF.getText()) ==0) {
+						throw new DataInvalidException("Drug Quantity can not be 0 Availabel quantity is: "+quantity);
+					}
+					if(quantity<Integer.parseInt( QtyTF.getText())) {
+						throw new DataInvalidException("Drug Quantity is less only"+quantity+"is Availabel");
+					}
+					TempBill x = new TempBill(BatchNoTF.getText(), NameTF.getText(), PriceTF.getText(), QtyTF.getText());
+					temp.add(x);
+					reset();
+					JOptionPane.showMessageDialog(null, "Medicine has been Added For Bill");
 				} catch (DataInvalidException e) {
 					JOptionPane.showMessageDialog(null, e.getMessage());
 				}
 			
-			TempBill x = new TempBill(BatchNoTF.getText(), NameTF.getText(), PriceTF.getText(), QtyTF.getText());
-			temp.add(x);
-			reset();
-			JOptionPane.showMessageDialog(null, "Medicine has been Added For Bill");
-
+				
 		}
 	}
 

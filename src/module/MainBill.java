@@ -167,6 +167,7 @@ public class MainBill extends JFrame implements ActionListener {
 				}
 				
 			}
+			 JOptionPane.showMessageDialog(null,"Bill generated");
 			clearTable();
 			while(i.hasNext()) {
 				i.remove();
@@ -188,9 +189,6 @@ public class MainBill extends JFrame implements ActionListener {
 			ResultSet rs=ps.executeQuery();
 			rs.next();
 			int q= rs.getInt("drugQuantity");
-			if(q<qty) {
-				throw new  DataInvalidException("Drug Quantity is less only"+q+"is Availabel");
-			}
 			q=q-qty;
 			String updateQuery="update medicine set drugQuantity="+q+" where drugBarcode='"+barCode+"'";
 			PreparedStatement s=connection.prepareStatement(updateQuery);
@@ -219,8 +217,6 @@ public class MainBill extends JFrame implements ActionListener {
 			ps.executeUpdate();
 
 		}
-		 JOptionPane.showMessageDialog(null,"Bill generated");
-		 
 	}
 	
 
