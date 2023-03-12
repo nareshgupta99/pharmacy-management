@@ -91,7 +91,7 @@ public class Validation implements WindowListener {
 		if(msg==null) {
 			throw new DataInvalidException("Quantity field cannot be null ");
 		}
-		if(msg.equals("")) {
+		if(msg.isEmpty()) {
 			throw new DataInvalidException("Quantity field cannot be null ");
 		}
 		char a[]=msg.toCharArray();

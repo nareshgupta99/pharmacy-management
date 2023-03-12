@@ -252,6 +252,9 @@ public class SearchMedicine extends JFrame implements ItemListener,ActionListene
 		dm.getDataVector().removeAllElements();
 		revalidate();
 	}
+	
+	
+
 
 	@Override
 	public void keyTyped(KeyEvent e) {
