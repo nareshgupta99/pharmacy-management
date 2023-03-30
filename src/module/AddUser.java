@@ -224,19 +224,18 @@ public class AddUser extends JFrame implements ActionListener
     	  if(female.isSelected()) {
     		 gender=female.getText();
     	 }
-    	  System.out.println(gender);
     	    if(add==ae.getSource())
                {
       			
             	  String query="insert into user(user_name,Dob,Address,phone,salary,Gender,password,role)values(?,?,?,?,?,?,?,?)";
             	  PreparedStatement ps;
 				try {
-					Validation.checkPassword(password.getText());
 					Validation.characterStringValid(userName.getText(), "User Name");
+					Validation.isdobValid(dob.getDate());
 					Validation.characterStringValid(address.getText(), " Address");
 					Validation.isPhoneValid(phone.getText());
 					Validation.isPriceValid(salary.getText()," salary");
-					Validation.isdobValid(dob.getDate());
+					Validation.checkPassword(password.getText());
 					 Date db=new  Date(dob.getDate().getTime());
 					ps = con.prepareStatement(query);
 					ps.setString(1, userName.getText());

@@ -79,10 +79,26 @@ public class Validation implements WindowListener {
 	
 	public static void checkPassword(String password) throws DataInvalidException {
 	
+		char []allow= {'&','@','$'};
 		if ( password.isEmpty()) {
-			
 				throw new DataInvalidException("user name and password cannot empty");
 			}
+		else if(password.length()<5) {
+			throw new DataInvalidException("Password length can not be less than 5");
+		}
+		
+		char a[]=password.toCharArray();
+		for(char t:a) {
+			if(!(t>='a' && t<='z' || t>='A' && t<='Z' || t=='@' || t>='0' && t<='9' || t=='&' || t=='$')) {
+				throw new DataInvalidException("Password contains only Alphanumeric character or @ ,&,$ is allowed ");
+			}
+			
+		}
+		if(!(checkSpecialSymbol(password))) {
+			throw new DataInvalidException("Password contains at least one Special Symbol allowed Symbol are @ ,&,$  ");
+		}
+		
+	
 	}
 
 	
@@ -110,11 +126,16 @@ public class Validation implements WindowListener {
 		if(msg.equals("")) {
 			throw new DataInvalidException(fieldName+" field cannot be null ");
 		}
+	
 		char a[]=msg.toCharArray();
 		for(char t:a) {
 			if(!(t>='a' && t<='z' || t>='A' && t<='Z' || t==' ')) {
 				throw new DataInvalidException("Only Alphabate character are allowed");
 			}
+		}
+		
+		if((msg.length()<4) ){
+			throw new DataInvalidException(fieldName+" field at least 4 character long");
 		}
 
 	}
@@ -131,6 +152,17 @@ public class Validation implements WindowListener {
 		
 	}
 	
+	public static boolean  checkSpecialSymbol(String s) {
+		char[]a=s.toCharArray();
+		 for(int i=0;i<a.length;i++) {
+			 if(a[i] == '@' || a[i]=='$'|| a[i]=='&') {
+				 return true;
+			 }
+			 
+		 }
+		return false;
+		
+	}
 	@Override
 	public void windowOpened(WindowEvent e) {
 		HomePage.setHomePageActive(false);
