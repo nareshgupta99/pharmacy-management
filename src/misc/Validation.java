@@ -140,6 +140,27 @@ public class Validation implements WindowListener {
 
 	}
 	
+	public static void isAlphaNumericValid(String msg,String fieldName) throws DataInvalidException {
+		if(msg==null) {
+			throw new DataInvalidException(fieldName+" field cannot be null ");
+		}
+		if(msg.equals("")) {
+			throw new DataInvalidException(fieldName+" field cannot be null ");
+		}
+	
+		char a[]=msg.toCharArray();
+		for(char t:a) {
+			if(!(t>='a' && t<='z' || t>='A' && t<='Z' || t==' ' || t>='0' && t<='9')) {
+				throw new DataInvalidException("Only AlphabateNumeric And Space is allowed");
+			}
+		}
+		
+		if((msg.length()<4) ){
+			throw new DataInvalidException(fieldName+" field at least 4 character long");
+		}
+
+	}
+	
 	public static void isdobValid(Date date) throws DateInvalidException {
 		if(date==null) {
 			throw new DateInvalidException("dob is Not Enterd");

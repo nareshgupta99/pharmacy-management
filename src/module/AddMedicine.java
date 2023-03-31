@@ -82,8 +82,6 @@ public class AddMedicine extends JFrame implements ActionListener{
         panel = new JPanel();
         panel.setLocation(50, 25);
         Dimension panelSize=getPanelSize(screenSize.width-300,screenSize.height-300);
-        System.out.println(screenSize.height);
-        System.out.println(screenSize.width);
         panel.setBackground(Color.WHITE);
         panel.setSize(panelSize);
         panel.setLayout(null);
@@ -227,7 +225,7 @@ public class AddMedicine extends JFrame implements ActionListener{
         	 Validation.isPhoneValid(supplierContact.getText());
         	 Validation.isMfgValid(mfg.getDate());
         	 Validation.isExpiryValid(expiry.getDate());
-        	 Validation.characterStringValid(drugName.getText(),"drug Name");
+        	 Validation.isAlphaNumericValid(drugName.getText(),"drug Name");
         	 Validation.characterStringValid(companyName.getText(),"company Name");
         	 Validation.characterStringValid(supplierName.getText(),"supplierName");
         	 

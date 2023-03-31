@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,8 +17,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import exceptions.DataInvalidException;
 import misc.PharmacyDb;
-import misc.Security;
 import misc.Validation;
 
 public class ResetPassword extends JFrame implements ActionListener {
@@ -107,21 +107,26 @@ public class ResetPassword extends JFrame implements ActionListener {
 			dispose();
 
 		else if (ae.getSource() == b1) {
-			String un, op, np, cp;
+			String  np, cp;
 			np = newPassword.getText();
 			cp = confirmPassword.getText();
 
 			if (np.equals(cp)) {
 				try {
+					Validation.checkPassword(cp);
 					st = con.prepareStatement("update user set password=? where user_name=? and role!=?");
 					st.setString(1, np);
 					st.setString(2, userName.getText());
 					st.setString(3, "admin");
 					result = st.executeUpdate();
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (DataInvalidException e) {
+					JOptionPane.showMessageDialog(null,e.getMessage()," Error",JOptionPane.WARNING_MESSAGE);
+			}catch(SQLException e2) {
+				e2.printStackTrace();
+			}
+					
 
-				}
+				
 			} else {
 				JOptionPane.showMessageDialog(null, "New password & Confirm Password does not match");
 			}

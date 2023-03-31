@@ -5,12 +5,10 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -18,8 +16,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 
+import exceptions.DataInvalidException;
 import misc.PharmacyDb;
 import misc.Security;
 import misc.Validation;
@@ -115,6 +113,7 @@ public class ChangePassword extends JFrame implements ActionListener {
 
 			if (np.equals(cp)) {
 				try {
+						Validation.checkPassword(cp);
 						st = con.prepareStatement("update user set password=? where user_name=?");
 						st.setString(1, np);
 						st.setString(2, Security.getUserName());
@@ -124,9 +123,11 @@ public class ChangePassword extends JFrame implements ActionListener {
 						newPassword.setText("");
 						confirmPassword.setText("");
 					
-					} catch (Exception e) {
-						System.out.print(e);
-				}
+					} catch (DataInvalidException e) {
+						JOptionPane.showMessageDialog(null,e.getMessage()," Error",JOptionPane.WARNING_MESSAGE);
+				} catch (SQLException e) {
+						e.printStackTrace();
+					}
 
 				}
 
