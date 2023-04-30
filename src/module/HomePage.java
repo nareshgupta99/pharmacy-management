@@ -43,7 +43,7 @@ public class HomePage implements ActionListener {
 		addMedicine = new JMenuItem("Adding Drug");
 		searchMedicine = new JMenuItem("Search Drug");
 		deleteMedicine = new JMenuItem("Delete Drug");
-		background = new JLabel("", new ImageIcon("PHARMACYIMAGE3.png"), JLabel.CENTER);
+		background = new JLabel("", new ImageIcon(getClass().getClassLoader().getResource("PHARMACYIMAGE3.png")), JLabel.CENTER);
 		Sal = new JMenu("Sales  ");
 		MUser = new JMenu("ManageUsers  ");
 		Rep = new JMenu("Report  ");
@@ -112,7 +112,7 @@ public class HomePage implements ActionListener {
 
 		update.addActionListener(this);
 		expiredDrug.addActionListener(this);
-		Drugdet.add(update);
+//		Drugdet.add(update);
 		Drugdet.add(expiredDrug);
 		Drugdet.add(avilableDrug);
 		Drugdet.add(medicineList);
@@ -206,6 +206,7 @@ public class HomePage implements ActionListener {
 		if (Security.getRole().equalsIgnoreCase("admin")) {
 			Drug.add(addMedicine);
 			Drug.add(deleteMedicine);
+			Drug.add(update);
 			MUser.add(deleteUser);
 			MUser.add(addUser);
 			MUser.add(userList);

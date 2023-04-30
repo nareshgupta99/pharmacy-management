@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.ButtonGroup;
@@ -47,7 +48,7 @@ public class AddUser extends JFrame implements ActionListener
 
        public AddUser()
         {
-			ImageIcon icon = new ImageIcon("image3.jpg");
+			ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("image3.jpg"));
 			JLabel label = new JLabel(icon);
 			Dimension size = label.getPreferredSize();
 			label.setBounds(0, 0, size.width, size.height);
@@ -230,7 +231,12 @@ public class AddUser extends JFrame implements ActionListener
             	  String query="insert into user(user_name,Dob,Address,phone,salary,Gender,password,role)values(?,?,?,?,?,?,?,?)";
             	  PreparedStatement ps;
 				try {
-					Validation.characterStringValid(userName.getText(), "User Name");
+					ps=con.prepareStatement("Select * from user where user_name='"+userName.getText()+"'");
+					ResultSet rs=ps.executeQuery();
+					if(rs.next()) {
+						throw new DataInvalidException("Duplicate User Name :User is Already Present");
+					}
+					Validation.isUserValid(userName.getText(), "User Name");
 					Validation.isdobValid(dob.getDate());
 					Validation.characterStringValid(address.getText(), " Address");
 					Validation.isPhoneValid(phone.getText());
@@ -257,7 +263,6 @@ public class AddUser extends JFrame implements ActionListener
 		        	 JOptionPane.showMessageDialog(null,e2.getMessage());
 		         }
 				catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		        
@@ -280,8 +285,7 @@ public class AddUser extends JFrame implements ActionListener
 	    dob.setDate(null);
      }
      
-
-     
+    
 }
 
 

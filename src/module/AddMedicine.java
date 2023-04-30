@@ -6,11 +6,10 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
@@ -89,7 +88,7 @@ public class AddMedicine extends JFrame implements ActionListener{
 
         
         /**************** creating object  ***************** */
-   		ImageIcon icon=new ImageIcon("image2.jpg");
+   		ImageIcon icon=new ImageIcon(getClass().getClassLoader().getResource("image2.jpg"));
    		JLabel label=new JLabel(icon);
         drugSupplierLabel=new JLabel("Drug Supplier:");
         drugNameLabel = new JLabel("Drug Name:");
@@ -209,6 +208,18 @@ public class AddMedicine extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
     	if(e.getSource()== add) {
     		if(barcodeValue==null || barcodeValue.equals("")) {
+    			try {
+    				con=PharmacyDb.getConnection();
+					PreparedStatement ps=con.prepareStatement("select * from medicine where drugName='"+drugName.getText().toLowerCase()+"'");
+					ResultSet rs=ps.executeQuery();
+					if(rs.next()) {
+						throw new DataInvalidException("Medicine Already present go to update section and update it");
+					}
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}catch(DataInvalidException e2) {
+					JOptionPane.showMessageDialog(null,e2.getMessage());
+				}
     			if(!(drugName.getText().equals("")|| drugName==null) ){
     				barcodeValue=PharmacyDb.genrateBarcode(drugName.getText());
     				drugBarcode.setText(barcodeValue);
@@ -219,15 +230,15 @@ public class AddMedicine extends JFrame implements ActionListener{
          try {
         	 
         	 /* ********************** Validation *************************** */
+        	 Validation.isAlphaNumericValid(drugName.getText(),"drug Name");
         	 Validation.isPriceValid(drugCostPrice.getText(),"Cost Price");
         	 Validation.isPriceValid(drugSalePrice.getText(),"Sale Price");
         	 Validation.isNumberValid(drugQuantity.getText());
+        	 Validation.characterStringValid(companyName.getText(),"company Name");
+        	 Validation.characterStringValid(supplierName.getText(),"supplierName");
         	 Validation.isPhoneValid(supplierContact.getText());
         	 Validation.isMfgValid(mfg.getDate());
         	 Validation.isExpiryValid(expiry.getDate());
-        	 Validation.isAlphaNumericValid(drugName.getText(),"drug Name");
-        	 Validation.characterStringValid(companyName.getText(),"company Name");
-        	 Validation.characterStringValid(supplierName.getText(),"supplierName");
         	 
         	 addMedicineData();
         	 
@@ -290,7 +301,7 @@ public class AddMedicine extends JFrame implements ActionListener{
     	 Date exp=new Date(expiry.getDate().getTime());
     	 
 		PreparedStatement ps=con.prepareStatement(query);
-		ps.setString(1, drugName.getText());
+		ps.setString(1, drugName.getText().toLowerCase());
 		ps.setString(2, barcodeValue);
 		ps.setString(3, supplierName.getText());
 		ps.setFloat(4, Float.parseFloat(drugCostPrice.getText()));

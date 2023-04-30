@@ -253,8 +253,6 @@ public class SearchMedicine extends JFrame implements ItemListener,ActionListene
 		revalidate();
 	}
 	
-	
-
 
 	@Override
 	public void keyTyped(KeyEvent e) {

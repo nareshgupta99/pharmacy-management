@@ -39,7 +39,7 @@ public class Validation implements WindowListener {
 		}
 		
 		else if(date.after(new java.util.Date())) {
-			 throw new DateInvalidException("manufacture date is after as expiry date");
+			 throw new DateInvalidException("manufacture date is after as Today date");
 		 }
 		
 		
@@ -184,6 +184,30 @@ public class Validation implements WindowListener {
 		return false;
 		
 	}
+	
+	public static void isUserValid(String msg,String fieldName) throws DataInvalidException {
+		if(msg.isEmpty()) {
+			throw new DataInvalidException(fieldName+" field cannot be null ");
+		}
+		if(msg.isBlank()) {
+			throw new DataInvalidException(fieldName+" field cannot be null ");
+		}
+	
+		char a[]=msg.toCharArray();
+		for(char t:a) {
+			if(!(t>='a' && t<='z' || t>='A' && t<='Z' || t==' ' || t>='0' || t<='9' || t=='@')) {
+				throw new DataInvalidException("Alpha Numeric character and @  are allowed");
+			}
+		}
+		
+		if((msg.length()<4) ){
+			throw new DataInvalidException(fieldName+" field at least 4 character long");
+		}
+
+	}
+	
+
+	
 	@Override
 	public void windowOpened(WindowEvent e) {
 		HomePage.setHomePageActive(false);

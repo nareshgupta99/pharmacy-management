@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
@@ -32,11 +33,11 @@ public class ResetPassword extends JFrame implements ActionListener {
 	Font ft1;
 	Connection con;
 	PreparedStatement st;
-	int result;
+	
 
 	public ResetPassword() {
 		
-		ImageIcon ico = new ImageIcon("image3.jpg");
+		ImageIcon ico = new ImageIcon(getClass().getClassLoader().getResource("image3.jpg"));
 		JLabel label = new JLabel(ico);
 		Dimension size = label.getPreferredSize();
 		label.setBounds(0, 0, size.width, size.height);
@@ -114,13 +115,25 @@ public class ResetPassword extends JFrame implements ActionListener {
 			if (np.equals(cp)) {
 				try {
 					Validation.checkPassword(cp);
+					PreparedStatement ps = con.prepareStatement("Select * from user where user_name='"+userName.getText()+"'");
+					ResultSet rs=ps.executeQuery();
+					if(!(rs.next())) {
+						throw new DataInvalidException("User Name not valid");
+					}
 					st = con.prepareStatement("update user set password=? where user_name=? and role!=?");
 					st.setString(1, np);
 					st.setString(2, userName.getText());
 					st.setString(3, "admin");
-					result = st.executeUpdate();
+				int	result = st.executeUpdate();
+				if (result == 1) {
+					JOptionPane.showMessageDialog(null, "Password changed Successfully");
+					newPassword.setText("");
+					confirmPassword.setText("");
+					userName.setText("");
+				
+				}
 				} catch (DataInvalidException e) {
-					JOptionPane.showMessageDialog(null,e.getMessage()," Error",JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null,e.getMessage()," ",JOptionPane.WARNING_MESSAGE);
 			}catch(SQLException e2) {
 				e2.printStackTrace();
 			}
@@ -130,15 +143,7 @@ public class ResetPassword extends JFrame implements ActionListener {
 			} else {
 				JOptionPane.showMessageDialog(null, "New password & Confirm Password does not match");
 			}
-			if (result == 1) {
-				JOptionPane.showMessageDialog(null, "Password changed Successfully");
-				newPassword.setText("");
-				confirmPassword.setText("");
-				userName.setText("");
-			}
-			else if(result==0) {
-				JOptionPane.showMessageDialog(null, "Invalid User Name");
-			}
+				
 
 		}
 

@@ -43,7 +43,7 @@ public class Sales extends JFrame implements ActionListener {
 	String date;
 	public Sales() {
 		
-		ImageIcon icon = new ImageIcon("sale.jpg");
+		ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("sale.jpg"));
 		JLabel label = new JLabel(icon);
 		Dimension size = label.getPreferredSize();
 		label.setBounds(0, 0, size.width, size.height);

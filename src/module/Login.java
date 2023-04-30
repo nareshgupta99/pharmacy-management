@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -53,7 +54,9 @@ public class Login extends Security implements ActionListener {
 		userLabel=new JLabel("USER NAME");
 		passwordLabel=new JLabel("PASSWORD");
 		mode=new JComboBox(values);
-		background=new JLabel("",new ImageIcon("PHARMACYIMAGE1.jpg"),JLabel.CENTER);
+		background=new JLabel("",new ImageIcon(getClass().getClassLoader().getResource("PHARMACYIMAGE1.jpg")),JLabel.CENTER);
+//		background=new JLabel("",new ImageIcon("resource/PHARMACYIMAGE1.jpg"),JLabel.CENTER);
+		
 		userField=new JTextField(); 
 		login=new JButton("LOGIN");		
 		Font ft1=new Font("Arial Black",Font.BOLD,18);
@@ -118,7 +121,7 @@ public class Login extends Security implements ActionListener {
 		welcome = new JWindow();
 		JPanel panel = new JPanel();
 		JLabel heading = new JLabel("PHARMACY MANAGEMENT");
-		ImageIcon icon=new ImageIcon("splash.jpg");
+		ImageIcon icon=new ImageIcon(getClass().getClassLoader().getResource("splash.jpg"));
 		JLabel label=new JLabel(icon,JLabel.CENTER);
 		
 		welcome.setSize(600, 416);

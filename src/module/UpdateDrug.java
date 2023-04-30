@@ -42,7 +42,7 @@ public class UpdateDrug extends JFrame implements ActionListener {
 
 	public UpdateDrug() {
 		
-		 ImageIcon icon=new ImageIcon("image2.jpg");
+		 ImageIcon icon=new ImageIcon(getClass().getClassLoader().getResource("image2.jpg"));
 	   		JLabel label=new JLabel(icon);
 	   		Dimension size=label.getPreferredSize();
 	   		label.setBounds(0, 0, size.width, size.height);

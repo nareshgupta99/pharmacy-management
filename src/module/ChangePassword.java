@@ -36,7 +36,7 @@ public class ChangePassword extends JFrame implements ActionListener {
 	
 	public ChangePassword() {
 		
-		ImageIcon ico = new ImageIcon("image3.jpg");
+		ImageIcon ico = new ImageIcon(getClass().getClassLoader().getResource("image3.jpg"));
 		JLabel label = new JLabel(ico);
 		Dimension size = label.getPreferredSize();
 		label.setBounds(0, 0, size.width, size.height);
@@ -114,10 +114,15 @@ public class ChangePassword extends JFrame implements ActionListener {
 			if (np.equals(cp)) {
 				try {
 						Validation.checkPassword(cp);
+						PreparedStatement ps=con.prepareStatement("select * from user where user_name='"+Security.getUserName()+"'and password='"+op+"'");
+						ResultSet resultSet = ps.executeQuery();
+						if(!(resultSet.next())) {
+							throw new DataInvalidException("Old password is Wrong");
+						}
 						st = con.prepareStatement("update user set password=? where user_name=?");
 						st.setString(1, np);
 						st.setString(2, Security.getUserName());
-						st.executeUpdate();
+						System.out.println( st.executeUpdate());
 						JOptionPane.showMessageDialog(null, "Password changed Successfully");
 						oldPassword.setText("");
 						newPassword.setText("");
