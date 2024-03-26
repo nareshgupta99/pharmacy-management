@@ -2,15 +2,35 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="resource"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11">
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/DELL/Downloads/MySqlJdbcDriver/mysql-connector-j-8.0.31.jar"/>
-	<classpathentry kind="lib" path="C:/Users/DELL/Desktop/jcalendar-1.4/jcalendar-1.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/DELL/Desktop/jcalendar-1.4/jgoodies-common-1.2.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/DELL/Desktop/jcalendar-1.4/jgoodies-looks-2.4.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/DELL/Desktop/jcalendar-1.4/junit-4.6.jar"/>
+	<classpathentry kind="lib" path="dependency/jcalendar-1.4.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="dependency/jgoodies-common-1.2.0.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="dependency/jgoodies-looks-2.4.1.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="dependency/junit-4.6.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="dependency/mysql-connector-j-8.0.31.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
