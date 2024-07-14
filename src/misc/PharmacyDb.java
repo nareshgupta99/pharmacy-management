@@ -63,12 +63,12 @@ public class PharmacyDb {
 		PreparedStatement s, u, m;
 		System.out.println("in create table");
 		try {
-			s = con.prepareStatement(SALE);
-			s.execute();
 			u = con.prepareStatement(USER);
 			u.execute();
 			m = con.prepareStatement(MEDICINE);
 			m.execute();
+			s = con.prepareStatement(SALE);
+			s.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
